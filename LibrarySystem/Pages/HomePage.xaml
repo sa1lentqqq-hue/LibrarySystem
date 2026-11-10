@@ -11,11 +11,8 @@
                 <!-- Плашка про просрочку (красная — есть просроченные, зелёная — всё в порядке); по щелчку открывает список -->
                 <Border x:Name="AlertHost" Margin="6,0,6,14"/>
 
-                <!-- Быстрый переход: выпадающий список всех разделов -->
-                <StackPanel x:Name="NavPanel" Orientation="Horizontal" Margin="6,0,6,16">
-                    <TextBlock Text="Быстрый переход:" Foreground="White" FontSize="14" VerticalAlignment="Center" Margin="0,0,12,0"/>
-                    <ComboBox x:Name="QuickNav" Width="330" Style="{StaticResource InputCombo}"/>
-                </StackPanel>
+                <!-- Быстрый переход: пилюли разделов с иконками; плавно подсвечиваются латунью и слегка «приподнимаются» -->
+                <WrapPanel x:Name="NavPanel" Margin="2,0,2,14"/>
 
                 <!-- Показатели библиотеки -->
                 <TextBlock x:Name="StatsHeader" Text="Библиотека сегодня" Style="{StaticResource H1}" Foreground="White" Margin="6,0,0,10"/>
