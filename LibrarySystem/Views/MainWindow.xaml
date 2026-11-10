@@ -1,0 +1,95 @@
+<Window x:Class="LibrarySystem.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:LibrarySystem.Controls"
+        Title="Библиотечная система" Width="1200" Height="760" MinWidth="1000" MinHeight="640"
+        WindowStartupLocation="CenterScreen" Style="{StaticResource AppWindow}"
+        PreviewKeyDown="OnPreviewKeyDown" PreviewMouseDown="OnPreviewMouseDown">
+    <Grid>
+    <DockPanel x:Name="Root" Opacity="0">
+        <!-- Шапка (header) -->
+        <Border DockPanel.Dock="Top" Background="{StaticResource PrimaryBrush}" Height="68">
+            <Grid Margin="16,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <c:BookEmblem Height="42" Width="50" Margin="0,0,14,0"/>
+                    <TextBlock x:Name="TitleText" Style="{StaticResource H1}" Foreground="White"
+                               FontSize="24" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Width="360">
+                    <TextBlock x:Name="UserText" Foreground="{StaticResource BrassBrush}" FontSize="12"/>
+                    <!-- Сквозной поиск по книгам и читателям: подсказки при вводе, «✕» — очистить, Esc — очистить и вернуться.
+                         На главном меню скрыт (Hidden, чтобы шапка не «прыгала») -->
+                    <Grid x:Name="SearchArea" Margin="0,4,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <TextBox x:Name="SearchBox" Style="{StaticResource InputBox}" MinHeight="28" Padding="8,3,28,3"
+                                     ToolTip="Поиск по книгам, авторам и читателям"
+                                     TextChanged="OnSearchTextChanged" PreviewKeyDown="OnSearchKeyDown"
+                                     GotKeyboardFocus="OnSearchGotFocus" LostKeyboardFocus="OnSearchLostFocus"/>
+                            <TextBlock x:Name="SearchHint" Text="Книга, автор, читатель…" Foreground="{StaticResource MutedBrush}"
+                                       FontSize="13" IsHitTestVisible="False" VerticalAlignment="Center" Margin="10,0,28,0"
+                                       TextTrimming="CharacterEllipsis"/>
+                            <Button x:Name="SearchClear" Style="{StaticResource ClearButton}" HorizontalAlignment="Right"
+                                    VerticalAlignment="Center" Margin="0,0,4,0" Visibility="Collapsed" Click="OnSearchClear"/>
+                        </Grid>
+                        <Button Grid.Column="1" Content="Найти" Style="{StaticResource BrassButton}"
+                                MinHeight="28" Padding="14,2" Margin="6,0,0,0" Click="OnSearch"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <Border DockPanel.Dock="Top" Height="3" Background="{StaticResource AccentBrush}"/>
+
+        <!-- Кнопка «Назад» и «хлебные крошки» (любую крошку можно нажать) -->
+        <Border DockPanel.Dock="Top" Background="{StaticResource CrumbBrush}" Height="42">
+            <DockPanel Margin="14,0">
+                <Button x:Name="BackButton" DockPanel.Dock="Left" Content="←  Назад" Style="{StaticResource WoodButton}"
+                        MinHeight="28" Padding="14,2" Margin="0,0,16,0" VerticalAlignment="Center"
+                        ToolTip="Вернуться назад (Alt + ←)" Visibility="Collapsed" Click="OnBack"/>
+                <StackPanel x:Name="CrumbPanel" Orientation="Horizontal" VerticalAlignment="Center"/>
+            </DockPanel>
+        </Border>
+
+        <!-- Подвал (footer) -->
+        <Border DockPanel.Dock="Bottom" Background="{StaticResource PrimaryBrush}" Height="28">
+            <TextBlock x:Name="FooterText" Foreground="#D6C8B0" FontSize="12"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
+
+        <!-- Область страницы -->
+        <ContentControl x:Name="PageHost" IsTabStop="False"/>
+    </DockPanel>
+
+    <!-- Подсказки поиска: лежат поверх страницы под строкой поиска (без Popup — открываются мгновенно и не «отрываются» от окна) -->
+    <Border x:Name="SuggestPanel" Visibility="Collapsed" Width="360" MaxHeight="320"
+            HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,60,16,0"
+            Background="{StaticResource CardBrush}" BorderBrush="{StaticResource AccentBrush}"
+            BorderThickness="1" CornerRadius="3" ClipToBounds="True">
+        <ListBox x:Name="SuggestList" Focusable="False" BorderThickness="0" Background="Transparent"
+                 ItemContainerStyle="{StaticResource SuggestItem}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 PreviewMouseLeftButtonUp="OnSuggestClick">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel LastChildFill="True">
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding Kind}" FontSize="11" Opacity="0.65"
+                                   Margin="12,0,0,0" VerticalAlignment="Center"/>
+                        <TextBlock TextTrimming="CharacterEllipsis" VerticalAlignment="Center"><Run Text="{Binding Head, Mode=OneWay}"/><Run Text="{Binding Match, Mode=OneWay}" FontWeight="Bold"/><Run Text="{Binding Tail, Mode=OneWay}"/></TextBlock>
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Border>
+
+        <!-- Всплывающие уведомления (поверх всего, справа внизу над подвалом) -->
+        <StackPanel x:Name="ToastHost" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    Margin="0,0,22,46"/>
+    </Grid>
+</Window>

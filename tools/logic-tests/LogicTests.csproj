@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Автоматические проверки логики и базы данных (без интерфейса WPF).
+       Запускаются в Linux / WSL: используют нативную библиотеку SQLite (libsqlite3) вместо NuGet-пакета.
+       В решение LibrarySystem.sln НЕ входят и на сборку приложения не влияют. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <UseAppHost>false</UseAppHost>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Настоящий код приложения (слой данных и бизнес-логика) -->
+    <Compile Include="../../LibrarySystem/Data/*.cs" />
+    <Compile Include="../../LibrarySystem/Services/*.cs"
+             Exclude="../../LibrarySystem/Services/Ui.cs;../../LibrarySystem/Services/WindowTheme.cs;../../LibrarySystem/Services/WindowMemory.cs;../../LibrarySystem/Services/ToastKind.cs" />
+    <Compile Include="../../LibrarySystem/Services/ToastKind.cs" />
+    <!-- Проверки и прослойка с API Microsoft.Data.Sqlite поверх libsqlite3 -->
+    <Compile Include="Shim.cs" />
+    <Compile Include="Tests.cs" />
+
+    <None Include="../../LibrarySystem/Data/*.sql" Link="Data/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="configs.json" Condition="Exists('configs.json')" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

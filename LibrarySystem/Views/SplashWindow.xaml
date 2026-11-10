@@ -1,0 +1,60 @@
+<Window x:Class="LibrarySystem.Views.SplashWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:LibrarySystem.Controls"
+        Title="Библиотечная система" Width="640" Height="520"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent" ResizeMode="NoResize"
+        ShowInTaskbar="False" WindowStartupLocation="CenterScreen"
+        Icon="pack://application:,,,/Assets/app.ico"
+        FontFamily="Segoe UI" Loaded="OnLoaded" MouseLeftButtonDown="OnSkip" KeyDown="OnKey">
+    <!-- Заставка: логотип раскрывается, появляются название и полоса загрузки,
+         затем заставка плавно гаснет и открывается окно входа. Щелчок или любая клавиша — пропустить. -->
+    <Grid Margin="32">
+        <Border CornerRadius="18" BorderThickness="2" BorderBrush="{StaticResource AccentBrush}">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="38" ShadowDepth="0" Opacity="0.75"/>
+            </Border.Effect>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#241912" Offset="0"/>
+                    <GradientStop Color="#3B2A20" Offset="0.55"/>
+                    <GradientStop Color="#223A2E" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <!-- свет лампы за логотипом -->
+                <Ellipse x:Name="Glow" Width="420" Height="420" Opacity="0" VerticalAlignment="Top" Margin="0,-70,0,0">
+                    <Ellipse.Fill>
+                        <RadialGradientBrush>
+                            <GradientStop Color="#99E6B45A" Offset="0"/>
+                            <GradientStop Color="#00E6B45A" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <c:AnimatedLogo x:Name="Logo" Width="230" Height="192"/>
+
+                    <TextBlock x:Name="TitleText" Text="Библиотечная система" HorizontalAlignment="Center"
+                               FontFamily="Georgia" FontWeight="Bold" FontSize="32"
+                               Foreground="{StaticResource BrassBrush}" Opacity="0" Margin="0,20,0,0">
+                        <TextBlock.RenderTransform>
+                            <TranslateTransform x:Name="TitleShift" Y="18"/>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+
+                    <TextBlock x:Name="SubText" Text="фонд  ·  читатели  ·  выдача  ·  штрафы" HorizontalAlignment="Center"
+                               FontSize="14" Foreground="#CDBFA5" Opacity="0" Margin="0,8,0,0"/>
+
+                    <Border Width="280" Height="3" CornerRadius="2" Background="#33FFFFFF" Margin="0,30,0,0">
+                        <Border x:Name="LoaderFill" Width="0" HorizontalAlignment="Left" CornerRadius="2"
+                                Background="{StaticResource BrassBrush}"/>
+                    </Border>
+                </StackPanel>
+
+                <TextBlock x:Name="FooterText" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                           Margin="0,0,0,16" FontSize="12" Foreground="#8F8270"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

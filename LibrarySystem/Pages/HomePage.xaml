@@ -1,0 +1,34 @@
+<UserControl x:Class="LibrarySystem.Pages.HomePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:LibrarySystem.Controls">
+    <Grid>
+        <c:AnimatedBackground/>
+        <!-- снизу оставлено место, чтобы была видна книжная полка -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,0,110">
+            <StackPanel Margin="24,18,24,10">
+
+                <!-- Плашка про просрочку (красная — есть просроченные, зелёная — всё в порядке); по щелчку открывает список -->
+                <Border x:Name="AlertHost" Margin="6,0,6,14"/>
+
+                <!-- Быстрый переход: выпадающий список всех разделов -->
+                <StackPanel x:Name="NavPanel" Orientation="Horizontal" Margin="6,0,6,16">
+                    <TextBlock Text="Быстрый переход:" Foreground="White" FontSize="14" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                    <ComboBox x:Name="QuickNav" Width="330" Style="{StaticResource InputCombo}"/>
+                </StackPanel>
+
+                <!-- Показатели библиотеки -->
+                <TextBlock x:Name="StatsHeader" Text="Библиотека сегодня" Style="{StaticResource H1}" Foreground="White" Margin="6,0,0,10"/>
+                <WrapPanel x:Name="StatsPanel"/>
+
+                <!-- Разделы -->
+                <TextBlock x:Name="TilesHeader" Text="Разделы библиотеки" Style="{StaticResource H1}" Foreground="White" Margin="6,20,0,10"/>
+                <WrapPanel x:Name="TilesPanel"/>
+
+                <!-- Диаграммы -->
+                <TextBlock x:Name="ChartsHeader" Text="Динамика выдач" Style="{StaticResource H1}" Foreground="White" Margin="6,20,0,10"/>
+                <WrapPanel x:Name="ChartsPanel"/>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

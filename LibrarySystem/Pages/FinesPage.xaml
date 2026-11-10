@@ -1,0 +1,31 @@
+<UserControl x:Class="LibrarySystem.Pages.FinesPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:LibrarySystem.Controls">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Content="Отметить оплаченным" Style="{StaticResource SuccessButton}" Margin="0,0,8,0" Click="OnPay"/>
+                <Button Content="Оплатить все долги читателя" Style="{StaticResource GreenButton}" Margin="0,0,8,0" Click="OnPayAll"/>
+                <Button Content="Пересчитать просрочки" Style="{StaticResource BrassButton}" Margin="0,0,8,0" Click="OnRecalc"/>
+                <Button x:Name="DeleteButton" Content="Удалить" Style="{StaticResource DangerButton}" Click="OnDelete"/>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,12">
+            <TextBlock x:Name="TotalText" Style="{StaticResource H2}" Foreground="{StaticResource DangerBrush}"/>
+            <TextBlock x:Name="RateText" Style="{StaticResource Muted}" VerticalAlignment="Center" Margin="24,0,0,0"/>
+        </StackPanel>
+
+        <c:FilterBar x:Name="Filter" Grid.Row="2" Margin="0,0,0,8"/>
+
+        <DataGrid x:Name="FinesGrid" Grid.Row="3" Style="{StaticResource LibraryGrid}"/>
+    </Grid>
+</UserControl>

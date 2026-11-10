@@ -1,0 +1,18 @@
+<UserControl x:Class="LibrarySystem.Pages.SearchPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:LibrarySystem.Controls">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="InfoText" Style="{StaticResource H2}"/>
+        <TextBlock Grid.Row="1" Style="{StaticResource Muted}" Margin="0,4,0,12"
+                   Text="Двойной щелчок по строке открывает запись в её разделе. Кнопка «Назад» (или Esc в поиске) возвращает к предыдущему списку."/>
+        <c:FilterBar x:Name="Filter" Grid.Row="2" Margin="0,0,0,8"/>
+        <DataGrid x:Name="ResultGrid" Grid.Row="3" Style="{StaticResource LibraryGrid}" MouseDoubleClick="OnRowDoubleClick"/>
+    </Grid>
+</UserControl>

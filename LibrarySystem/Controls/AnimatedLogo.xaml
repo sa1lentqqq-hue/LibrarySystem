@@ -1,0 +1,42 @@
+<UserControl x:Class="LibrarySystem.Controls.AnimatedLogo"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Width="240" Height="200" IsHitTestVisible="False">
+    <!-- Логотип: книга, которая раскрывается из закрытого состояния. Все части — векторные фигуры.
+         Анимацию запускает метод Play(). -->
+    <Viewbox Stretch="Uniform">
+        <Canvas Width="48" Height="40">
+
+            <!-- Левая половина: обложка, страница, строки текста -->
+            <Canvas x:Name="LeftHalf" Width="48" Height="40">
+                <Canvas.RenderTransform>
+                    <ScaleTransform x:Name="LeftScale" CenterX="24" CenterY="20" ScaleX="0"/>
+                </Canvas.RenderTransform>
+                <Path Fill="{StaticResource BrassBrush}" Data="M24,14 L1,7 L1,37 L24,40 Z"/>
+                <Path Fill="{StaticResource CardBrush}" Data="M24,10 L3,4 L3,32 L24,37 Z"/>
+                <Path x:Name="L1" Stroke="{StaticResource MutedBrush}" StrokeThickness="1" Opacity="0" Data="M7,12 L21,16"/>
+                <Path x:Name="L2" Stroke="{StaticResource MutedBrush}" StrokeThickness="1" Opacity="0" Data="M7,18 L21,22"/>
+                <Path x:Name="L3" Stroke="{StaticResource MutedBrush}" StrokeThickness="1" Opacity="0" Data="M7,24 L21,28"/>
+            </Canvas>
+
+            <!-- Правая половина -->
+            <Canvas x:Name="RightHalf" Width="48" Height="40">
+                <Canvas.RenderTransform>
+                    <ScaleTransform x:Name="RightScale" CenterX="24" CenterY="20" ScaleX="0"/>
+                </Canvas.RenderTransform>
+                <Path Fill="{StaticResource BrassBrush}" Data="M24,14 L47,7 L47,37 L24,40 Z"/>
+                <Path Fill="{StaticResource CardBrush}" Data="M24,10 L45,4 L45,32 L24,37 Z"/>
+                <Path x:Name="R1" Stroke="{StaticResource MutedBrush}" StrokeThickness="1" Opacity="0" Data="M41,12 L27,16"/>
+                <Path x:Name="R2" Stroke="{StaticResource MutedBrush}" StrokeThickness="1" Opacity="0" Data="M41,18 L27,22"/>
+                <Path x:Name="R3" Stroke="{StaticResource MutedBrush}" StrokeThickness="1" Opacity="0" Data="M41,24 L27,28"/>
+            </Canvas>
+
+            <!-- Корешок -->
+            <Path x:Name="Spine" Stroke="{StaticResource AccentBrush}" StrokeThickness="1.8" Data="M24,10 L24,40">
+                <Path.RenderTransform>
+                    <ScaleTransform x:Name="SpineScale" CenterX="24" CenterY="25" ScaleY="0"/>
+                </Path.RenderTransform>
+            </Path>
+        </Canvas>
+    </Viewbox>
+</UserControl>

@@ -1,0 +1,15 @@
+<UserControl x:Class="LibrarySystem.Pages.TablePage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:LibrarySystem.Controls">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="ButtonsPanel" Orientation="Horizontal" Margin="0,0,0,10"/>
+        <c:FilterBar x:Name="Filter" Grid.Row="1" Margin="0,0,0,8"/>
+        <DataGrid x:Name="DataGridMain" Grid.Row="2" Style="{StaticResource LibraryGrid}" MouseDoubleClick="OnDoubleClick"/>
+    </Grid>
+</UserControl>

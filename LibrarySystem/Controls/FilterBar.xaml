@@ -1,0 +1,29 @@
+<UserControl x:Class="LibrarySystem.Controls.FilterBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Единая панель фильтров для всех таблиц: поиск с кнопкой «✕», выпадающие фильтры, сортировка, счётчик -->
+    <WrapPanel Orientation="Horizontal">
+        <Grid Width="260" Margin="0,0,14,4" VerticalAlignment="Center">
+            <TextBox x:Name="SearchBox" Style="{StaticResource InputBox}" Padding="8,4,28,4"
+                     ToolTip="Поиск по всем столбцам (Esc — очистить)"
+                     TextChanged="OnTextChanged" PreviewKeyDown="OnSearchKeyDown"/>
+            <TextBlock x:Name="Hint" Text="Поиск по таблице…" Style="{StaticResource Muted}"
+                       IsHitTestVisible="False" VerticalAlignment="Center" Margin="10,0,28,0"/>
+            <Button x:Name="ClearButton" Style="{StaticResource ClearButton}" HorizontalAlignment="Right"
+                    VerticalAlignment="Center" Margin="0,0,5,0" Visibility="Collapsed" Click="OnClear"/>
+        </Grid>
+
+        <StackPanel x:Name="DropPanel" Orientation="Horizontal"/>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,14,4" VerticalAlignment="Center">
+            <TextBlock Text="Сортировка:" Style="{StaticResource Label}" Margin="0,0,8,0"/>
+            <ComboBox x:Name="SortBox" Style="{StaticResource InputCombo}" Width="150" SelectionChanged="OnSortChanged"/>
+            <Button x:Name="DirButton" Style="{StaticResource WoodButton}" MinHeight="32" MinWidth="130" Padding="10,2"
+                    Margin="6,0,0,0" Click="OnToggleDirection"/>
+        </StackPanel>
+
+        <Button Content="Сбросить" Style="{StaticResource MutedButton}" MinHeight="32" Padding="12,2" Margin="0,0,14,4"
+                VerticalAlignment="Center" Click="OnReset" ToolTip="Сбросить поиск и фильтры, вернуть сортировку по умолчанию"/>
+        <TextBlock x:Name="CountText" Style="{StaticResource Muted}" VerticalAlignment="Center" Margin="0,0,0,4"/>
+    </WrapPanel>
+</UserControl>
