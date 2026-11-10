@@ -11,7 +11,7 @@
     <Version>2.3.0</Version>
     <Authors>Дейнеко Артур Сергеевич</Authors>
     <Product>Библиотечная система</Product>
-    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon> 
   </PropertyGroup>
 
   <ItemGroup>
