@@ -37,38 +37,86 @@ public partial class HomePage : UserControl, IRefreshable
         Loaded += (_, _) => PlayCascade();
     }
 
-    private sealed record NavItem(string Key, string Title);
+    private sealed record NavItem(string Key, string Glyph, string Title);
 
-    /// <summary>Выпадающий список «Быстрый переход»: те же разделы, что и плитками, но без прокрутки.</summary>
+    /// <summary>Ряд пилюль «Быстрый переход»: все разделы перед глазами, без раскрывающихся списков.</summary>
     private void BuildQuickNav()
     {
         var items = new List<NavItem>
         {
-            new("books", "Фонд книг"),
-            new("readers", "Читатели"),
-            new("loans", "Выдача и возврат"),
-            new("fines", "Штрафы"),
-            new("reports", "Отчёты"),
-            new("about", "О программе"),
+            new("books", "📚", "Фонд книг"),
+            new("readers", "👥", "Читатели"),
+            new("loans", "🔁", "Выдача и возврат"),
+            new("fines", "💰", "Штрафы"),
+            new("reports", "📊", "Отчёты"),
+            new("about", "ℹ", "О программе"),
         };
         if (Session.IsAdmin)
             items.InsertRange(4, new[]
             {
-                new NavItem("genres", "Справочник жанров"),
-                new NavItem("users", "Пользователи"),
-                new NavItem("log", "Журнал действий"),
+                new NavItem("genres", "🏷", "Жанры"),
+                new NavItem("users", "🔑", "Пользователи"),
+                new NavItem("log", "📜", "Журнал действий"),
             });
 
-        QuickNav.ItemsSource = items;
-        QuickNav.DisplayMemberPath = nameof(NavItem.Title);
-        QuickNav.SelectedValuePath = nameof(NavItem.Key);
-        QuickNav.SelectionChanged += (_, _) =>
-        {
-            if (QuickNav.SelectedValue is not string key) return;
-            QuickNav.SelectedIndex = -1;                 // сбрасываем выбор, чтобы пункт можно было выбрать снова
-            MainWindow.Current.Navigate(key);
-        };
+        foreach (var item in items) AddPill(item);
     }
+
+    /// <summary>
+    /// Пилюля раздела: иконка и подпись. Наведение — плавная латунная подсветка и лёгкое «приподнятие»,
+    /// нажатие — короткое «вдавливание» и открытие раздела. Вместо уродского выпадающего списка.
+    /// </summary>
+    private void AddPill(NavItem item)
+    {
+        var content = new StackPanel { Orientation = Orientation.Horizontal };
+        content.Children.Add(new TextBlock
+        {
+            Text = item.Glyph, FontSize = 15, Margin = new Thickness(0, 0, 8, 0),
+            Foreground = (Brush)FindResource("BrassBrush"), VerticalAlignment = VerticalAlignment.Center,
+        });
+        content.Children.Add(new TextBlock
+        {
+            Text = item.Title, Foreground = Brushes.White, FontSize = 13,
+            FontWeight = FontWeights.SemiBold, VerticalAlignment = VerticalAlignment.Center,
+        });
+
+        var pill = new Border
+        {
+            Child = content, Margin = new Thickness(0, 0, 8, 8),
+            Padding = new Thickness(15, 8, 15, 8), CornerRadius = new CornerRadius(17),
+            Background = new SolidColorBrush(PillColor),
+            BorderBrush = new SolidColorBrush(Color.FromArgb(70, 214, 170, 84)),
+            BorderThickness = new Thickness(1),
+            Cursor = Cursors.Hand,
+            ToolTip = "Перейти: " + item.Title,
+        };
+
+        var scale = new ScaleTransform();
+        pill.RenderTransformOrigin = new Point(0.5, 0.5);
+        pill.RenderTransform = scale;
+        var ease = new CubicEase { EasingMode = EasingMode.EaseOut };
+
+        pill.MouseEnter += (_, _) =>
+        {
+            pill.Background.BeginAnimation(SolidColorBrush.ColorProperty,
+                new ColorAnimation(Color.FromArgb(150, 166, 116, 31), TimeSpan.FromMilliseconds(160)));
+            scale.BeginAnimation(ScaleTransform.ScaleXProperty, new DoubleAnimation(1.06, TimeSpan.FromMilliseconds(160)) { EasingFunction = ease });
+            scale.BeginAnimation(ScaleTransform.ScaleYProperty, new DoubleAnimation(1.06, TimeSpan.FromMilliseconds(160)) { EasingFunction = ease });
+        };
+        pill.MouseLeave += (_, _) =>
+        {
+            pill.Background.BeginAnimation(SolidColorBrush.ColorProperty,
+                new ColorAnimation(PillColor, TimeSpan.FromMilliseconds(220)));
+            scale.BeginAnimation(ScaleTransform.ScaleXProperty, new DoubleAnimation(1, TimeSpan.FromMilliseconds(200)) { EasingFunction = ease });
+            scale.BeginAnimation(ScaleTransform.ScaleYProperty, new DoubleAnimation(1, TimeSpan.FromMilliseconds(200)) { EasingFunction = ease });
+        };
+        pill.MouseLeftButtonUp += (_, _) => MainWindow.Current.Navigate(item.Key);
+
+        NavPanel.Children.Add(pill);
+    }
+
+    /// <summary>Спокойный полупрозрачный фон пилюли — мягко читается на дереве стеллажей.</summary>
+    private static readonly Color PillColor = Color.FromArgb(64, 251, 246, 234);
 
     /// <summary>Показатели пересчитываются при возврате на главную.</summary>
     public void Refresh() => LoadStats();
