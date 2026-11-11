@@ -35,7 +35,8 @@ public partial class HomePage : UserControl, IRefreshable
             new("fines", "💰", "Штрафы"),
             new("reports", "📊", "Отчёты"),
             new("about", "ℹ", "О программе"),
-            new("exit", "🚪", "Сменить пользователя"),
+            new("logout", "🚪", "Сменить пользователя"),
+            new("exit", "🚪", "Выход"),
         };
         if (Session.IsAdmin)
             items.InsertRange(4, new[]
