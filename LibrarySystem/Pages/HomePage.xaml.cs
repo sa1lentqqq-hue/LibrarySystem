@@ -10,7 +10,7 @@ using LibrarySystem.Views;
 
 namespace LibrarySystem.Pages;
 
-/// <summary>Главное меню: показатели библиотеки (расчёт по БД) и плитки разделов. Элементы появляются «каскадом».</summary>
+/// <summary>Главное меню: показатели библиотеки (расчёт по БД) и пилюли быстрого перехода. Элементы появляются «каскадом».</summary>
 public partial class HomePage : UserControl, IRefreshable
 {
     public HomePage()
@@ -18,21 +18,6 @@ public partial class HomePage : UserControl, IRefreshable
         InitializeComponent();
         BuildQuickNav();
         LoadStats();
-
-        AddTile("books", "Фонд книг", "AccentBrush");
-        AddTile("readers", "Читатели", "AccentBrush");
-        AddTile("loans", "Выдача и возврат", "AccentBrush");
-        AddTile("fines", "Штрафы", "AccentBrush");
-        AddTile("reports", "Отчёты", "AccentBrush");
-        if (Session.IsAdmin)
-        {
-            AddTile("genres", "Справочник жанров", "GreenBrush");
-            AddTile("users", "Пользователи", "GreenBrush");
-            AddTile("log", "Журнал действий", "GreenBrush");
-        }
-        AddTile("about", "О программе", "MutedBrush");
-        AddTile("logout", "Сменить пользователя", "MutedBrush");
-        AddTile("exit", "Выход", "DangerBrush");
 
         Loaded += (_, _) => PlayCascade();
     }
@@ -183,6 +168,7 @@ public partial class HomePage : UserControl, IRefreshable
         ChartsPanel.Children.Add(DashboardCharts.WeeklyChart(DashboardService.GetWeeklyLoans(8)));
     }
 
+    /// <summary>Показатели для статистики.</summary>
     private void AddStat(string title, string value, string key, string? filter)
     {
         var card = new Border
@@ -207,7 +193,6 @@ public partial class HomePage : UserControl, IRefreshable
                 },
             },
         };
-        // показатель можно нажать: откроется соответствующий список (с готовым фильтром, если он нужен)
         card.Cursor = Cursors.Hand;
         card.ToolTip = "Открыть список";
         card.MouseEnter += (_, _) => card.Background = new SolidColorBrush(Color.FromArgb(105, 251, 246, 234));
@@ -216,25 +201,11 @@ public partial class HomePage : UserControl, IRefreshable
         StatsPanel.Children.Add(card);
     }
 
-    private void AddTile(string key, string text, string brushKey)
-    {
-        var button = new Button
-        {
-            Content = text,
-            Style = (Style)FindResource("TileButton"),
-            Background = (Brush)FindResource(brushKey),
-        };
-        button.Click += (_, _) => MainWindow.Current.Navigate(key);
-        TilesPanel.Children.Add(button);
-    }
-
     /// <summary>Карточки и плитки по очереди проявляются и «всплывают» снизу — плавное, живое появление меню.</summary>
     private void PlayCascade()
     {
         var elements = new List<UIElement> { AlertHost, NavPanel, StatsHeader };
         elements.AddRange(StatsPanel.Children.Cast<UIElement>());
-        elements.Add(TilesHeader);
-        elements.AddRange(TilesPanel.Children.Cast<UIElement>());
         elements.Add(ChartsHeader);
         elements.AddRange(ChartsPanel.Children.Cast<UIElement>());
 
